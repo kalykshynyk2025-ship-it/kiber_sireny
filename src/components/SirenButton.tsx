@@ -102,10 +102,19 @@ export function SirenButton({
   const scheme = colorMap[siren.accentColor] || colorMap.lime;
 
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       onClick={() => onTogglePlay(siren.id)}
-      className={`group relative text-left w-full min-h-[160px] sm:min-h-[190px] md:min-h-[210px] rounded-2xl border-2 bg-[#140a28]/90 backdrop-blur-md p-5 sm:p-6 transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer active:scale-[0.98] ${
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          if (e.target === e.currentTarget) {
+            e.preventDefault();
+            onTogglePlay(siren.id);
+          }
+        }
+      }}
+      className={`group relative text-left w-full min-h-[160px] sm:min-h-[190px] md:min-h-[210px] rounded-2xl border-2 bg-[#140a28]/90 backdrop-blur-md p-5 sm:p-6 transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer select-none active:scale-[0.98] ${
         scheme.border
       } ${isPlaying ? scheme.activeBg : 'hover:bg-[#1b0e36] ' + scheme.hoverGlow}`}
     >
@@ -195,6 +204,6 @@ export function SirenButton({
           <span className="text-[11px] font-mono">{isLooping ? 'LOOP' : '1x'}</span>
         </div>
       </div>
-    </button>
+    </div>
   );
 }
